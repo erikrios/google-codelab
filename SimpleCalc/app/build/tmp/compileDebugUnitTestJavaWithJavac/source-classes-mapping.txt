@@ -1,0 +1,2 @@
+com/example/android/SimpleCalc/CalculatorTest.java
+ com.example.android.SimpleCalc.CalculatorTest

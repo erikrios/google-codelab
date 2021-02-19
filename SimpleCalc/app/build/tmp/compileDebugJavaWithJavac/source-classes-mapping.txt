@@ -1,0 +1,8 @@
+com/example/android/SimpleCalc/Calculator.java
+ com.example.android.SimpleCalc.Calculator
+ com.example.android.SimpleCalc.Calculator$Operator
+com/example/android/SimpleCalc/MainActivity.java
+ com.example.android.SimpleCalc.MainActivity
+ com.example.android.SimpleCalc.MainActivity$1
+com/example/android/SimpleCalc/BuildConfig.java
+ com.example.android.SimpleCalc.BuildConfig
