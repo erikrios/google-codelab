@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.erikriosetiawan.latihanroom.R
 import com.erikriosetiawan.latihanroom.database.Note
 import com.erikriosetiawan.latihanroom.databinding.ActivityMainBinding
-import com.erikriosetiawan.latihanroom.repository.ViewModelFactory
+import com.erikriosetiawan.latihanroom.helper.ViewModelFactory
 import com.erikriosetiawan.latihanroom.ui.insert.NoteAddUpdateActivity
 import com.erikriosetiawan.latihanroom.ui.insert.NoteAddUpdateActivity.Companion.REQUEST_ADD
 import com.erikriosetiawan.latihanroom.ui.insert.NoteAddUpdateActivity.Companion.REQUEST_UPDATE

@@ -11,7 +11,7 @@ import com.erikriosetiawan.latihanroom.R
 import com.erikriosetiawan.latihanroom.database.Note
 import com.erikriosetiawan.latihanroom.databinding.ActivityNoteAddUpdateBinding
 import com.erikriosetiawan.latihanroom.helper.DateHelper
-import com.erikriosetiawan.latihanroom.repository.ViewModelFactory
+import com.erikriosetiawan.latihanroom.helper.ViewModelFactory
 
 class NoteAddUpdateActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.erikriosetiawan.latihanroom.repository
+package com.erikriosetiawan.latihanroom.helper
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
