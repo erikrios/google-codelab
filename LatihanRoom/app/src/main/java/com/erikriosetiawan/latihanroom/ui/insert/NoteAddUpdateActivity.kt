@@ -55,7 +55,7 @@ class NoteAddUpdateActivity : AppCompatActivity() {
             actionBarTitle = getString(R.string.change)
             btnTitle = getString(R.string.update)
             note?.let {
-                binding.edtDescription.setText(it.title)
+                binding.edtTitle.setText(it.title)
                 binding.edtDescription.setText(it.description)
             }
         } else {
@@ -94,8 +94,8 @@ class NoteAddUpdateActivity : AppCompatActivity() {
                     }
                     viewModel.insert(note as Note)
                     setResult(RESULT_ADD, intent)
-                    finish()
                 }
+                finish()
             }
         }
     }
