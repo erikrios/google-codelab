@@ -1,8 +1,17 @@
 package com.erikriosetiawan.latihanroom.ui.insert
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.erikriosetiawan.latihanroom.R
+import com.erikriosetiawan.latihanroom.database.Note
+import com.erikriosetiawan.latihanroom.databinding.ActivityNoteAddUpdateBinding
+import com.erikriosetiawan.latihanroom.helper.DateHelper
+import com.erikriosetiawan.latihanroom.repository.ViewModelFactory
 
 class NoteAddUpdateActivity : AppCompatActivity() {
 
@@ -18,8 +27,134 @@ class NoteAddUpdateActivity : AppCompatActivity() {
         const val ALERT_DIALOG_DELETE = 20
     }
 
+    private var isEdit = false
+    private var note: Note? = null
+    private var position = 0
+    private lateinit var viewModel: NoteAddUpdateViewModel
+    private lateinit var binding: ActivityNoteAddUpdateBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_note_add_update)
+        binding = ActivityNoteAddUpdateBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        viewModel = obtainViewModel(this@NoteAddUpdateActivity)
+
+        note = intent.getParcelableExtra(EXTRA_NOTE)
+        note?.let {
+            position = intent.getIntExtra(EXTRA_POSITION, 0)
+            isEdit = true
+        } ?: run {
+            note = Note()
+        }
+
+        val actionBarTitle: String
+        val btnTitle: String
+
+        if (isEdit) {
+            actionBarTitle = getString(R.string.change)
+            btnTitle = getString(R.string.update)
+            note?.let {
+                binding.edtDescription.setText(it.title)
+                binding.edtDescription.setText(it.description)
+            }
+        } else {
+            actionBarTitle = getString(R.string.add)
+            btnTitle = getString(R.string.save)
+        }
+
+        supportActionBar?.title = actionBarTitle
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        binding.btnSubmit.text = btnTitle
+        binding.btnSubmit.setOnClickListener {
+            val title = binding.edtTitle.text.toString().trim()
+            val description = binding.edtDescription.text.toString().trim()
+            if (title.isEmpty()) {
+                binding.edtTitle.error = getString(R.string.empty)
+            } else if (description.isEmpty()) {
+                binding.edtDescription.error = getString(R.string.empty)
+            } else {
+                note?.let { note ->
+                    note.title = title
+                    note.description = description
+                }
+
+                val intent = Intent().apply {
+                    putExtra(EXTRA_NOTE, note)
+                    putExtra(EXTRA_POSITION, position)
+                }
+
+                if (isEdit) {
+                    viewModel.update(note as Note)
+                    setResult(RESULT_UPDATE, intent)
+                } else {
+                    note?.let { note ->
+                        note.date = DateHelper.getCurrentDate()
+                    }
+                    viewModel.insert(note as Note)
+                    setResult(RESULT_ADD, intent)
+                    finish()
+                }
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if (isEdit) {
+            menuInflater.inflate(R.menu.menu_form, menu)
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_delete -> showAlertDialog(ALERT_DIALOG_DELETE)
+            android.R.id.home -> showAlertDialog(ALERT_DIALOG_CLOSE)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        showAlertDialog(ALERT_DIALOG_CLOSE)
+    }
+
+    private fun showAlertDialog(type: Int) {
+        val isDialogClose = type == ALERT_DIALOG_CLOSE
+        val dialogTitle: String
+        val dialogMessage: String
+        if (isDialogClose) {
+            dialogTitle = getString(R.string.cancel)
+            dialogMessage = getString(R.string.message_cancel)
+        } else {
+            dialogMessage = getString(R.string.message_delete)
+            dialogTitle = getString(R.string.delete)
+        }
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        with(alertDialogBuilder) {
+            setTitle(dialogTitle)
+            setMessage(dialogMessage)
+            setCancelable(false)
+            setPositiveButton(getString(R.string.yes)) { _, _ ->
+                if (!isDialogClose) {
+                    viewModel.delete(note as Note)
+
+                    val intent = Intent()
+                    intent.putExtra(EXTRA_POSITION, position)
+                    setResult(RESULT_DELETE, intent)
+                }
+
+                finish()
+            }
+            setNegativeButton(getString(R.string.no)) { dialog, _ -> dialog.cancel() }
+        }
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
+    }
+
+    private fun obtainViewModel(activity: AppCompatActivity): NoteAddUpdateViewModel {
+        val factory = ViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory).get(NoteAddUpdateViewModel::class.java)
     }
 }
