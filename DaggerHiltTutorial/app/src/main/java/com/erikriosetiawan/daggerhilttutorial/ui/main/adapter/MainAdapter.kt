@@ -1,4 +1,4 @@
-package com.erikriosetiawan.daggerhilttutorial.ui.adapter
+package com.erikriosetiawan.daggerhilttutorial.ui.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
