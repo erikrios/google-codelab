@@ -24,6 +24,12 @@ class MainAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemLayoutBinding.inflate(layoutInflater)
+        binding.container.apply {
+            this.layoutParams = RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
         return DataViewHolder(binding)
     }
 
