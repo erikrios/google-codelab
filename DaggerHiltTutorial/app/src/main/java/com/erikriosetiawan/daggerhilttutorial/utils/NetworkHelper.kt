@@ -27,6 +27,7 @@ class NetworkHelper @Inject constructor(@ApplicationContext private val context:
             }
         } else {
             connectivityManager.run {
+                @Suppress("DEPRECATION")
                 connectivityManager.activeNetworkInfo?.run {
                     result = when (type) {
                         ConnectivityManager.TYPE_WIFI -> true
