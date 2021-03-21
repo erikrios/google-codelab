@@ -8,13 +8,17 @@ import com.erikriosetiawan.daggerhilttutorial.data.model.User
 import com.erikriosetiawan.daggerhilttutorial.databinding.ItemLayoutBinding
 
 class MainAdapter(
-    private val users: List<User>,
+    private val users: MutableList<User>,
     private var onItemClickListener: ((User) -> Unit)? = null
 ) :
     RecyclerView.Adapter<MainAdapter.DataViewHolder>() {
 
     fun setOnItemClickListener(listener: (User) -> Unit) {
         onItemClickListener = listener
+    }
+
+    fun addData(users: List<User>) {
+        this.users.addAll(users)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
