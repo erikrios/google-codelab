@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MyModularizationApp</string>
     <string name="title_news_feature">News Feature</string>
+    <string name="download_message">Click to Download News Module</string>
+    <string name="open_message">Open News Module</string>
+    <string name="delete_message">Delete News Module</string>
 </resources>
