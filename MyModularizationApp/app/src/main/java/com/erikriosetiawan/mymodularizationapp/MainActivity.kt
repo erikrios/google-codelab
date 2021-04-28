@@ -1,5 +1,6 @@
 package com.erikriosetiawan.mymodularizationapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -92,6 +93,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    @SuppressLint("SwitchIntDef")
     private fun monitorStateRequest() {
         var mySessionId = 0
         val listener = SplitInstallStateUpdatedListener {
