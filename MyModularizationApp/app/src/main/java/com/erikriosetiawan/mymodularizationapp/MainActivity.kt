@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
                         this@MainActivity,
                         "com.eririosetiawan.newsfeature.NewsLoaderActivity"
                     )
+                startActivity(intent)
             }
             buttonDeleteNewsModule.setOnClickListener {
                 val list = mutableListOf<String>()
