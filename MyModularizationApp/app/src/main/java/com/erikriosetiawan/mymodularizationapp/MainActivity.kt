@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 val intent =
                     Intent().setClassName(
                         this@MainActivity,
-                        "com.erikriosetiawan.newsfeature.NewsLoaderActivity"
+                        "com.erikriosetiawan.newsfeature.newsloader.NewsLoaderActivity"
                     )
                 startActivity(intent)
             }
