@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MyModularizationApp</string>
+    <string name="title_news_feature">News Feature</string>
 </resources>
