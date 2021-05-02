@@ -54,7 +54,7 @@ class CheeseActivity : BaseSearchActivity() {
 
     private fun createTextChangeObservable(): Observable<String> {
 
-        return Observable.create { emitter ->
+        val textChangeObservable = Observable.create<String> { emitter ->
             val textWatcher = object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
 
@@ -71,6 +71,8 @@ class CheeseActivity : BaseSearchActivity() {
                 queryEditText.removeTextChangedListener(textWatcher)
             }
         }
+
+        return textChangeObservable.filter { it.length >= 2 }
     }
 
     @SuppressLint("CheckResult")
