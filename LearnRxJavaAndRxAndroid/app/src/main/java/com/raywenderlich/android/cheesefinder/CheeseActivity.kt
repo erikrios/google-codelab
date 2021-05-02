@@ -81,7 +81,10 @@ class CheeseActivity : BaseSearchActivity() {
     override fun onStart() {
         super.onStart()
 
-        val searchTextObservable = createTextChangeObservable()
+        val buttonClickStream = createButtonClickObservable()
+        val textChangeStream = createTextChangeObservable()
+
+        val searchTextObservable = Observable.merge<String>(buttonClickStream, textChangeStream)
 
         searchTextObservable
                 .observeOn(AndroidSchedulers.mainThread())
