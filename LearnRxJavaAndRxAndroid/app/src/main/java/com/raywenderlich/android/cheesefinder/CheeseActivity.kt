@@ -31,6 +31,8 @@
 package com.raywenderlich.android.cheesefinder
 
 import android.annotation.SuppressLint
+import android.text.Editable
+import android.text.TextWatcher
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -39,7 +41,6 @@ import kotlinx.android.synthetic.main.activity_cheeses.*
 class CheeseActivity : BaseSearchActivity() {
 
     private fun createButtonClickObservable(): Observable<String> {
-
         return Observable.create { emitter ->
             searchButton.setOnClickListener {
                 emitter.onNext(queryEditText.text.toString())
@@ -51,11 +52,32 @@ class CheeseActivity : BaseSearchActivity() {
         }
     }
 
+    private fun createTextChangeObservable(): Observable<String> {
+
+        return Observable.create { emitter ->
+            val textWatcher = object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    s?.toString()?.let { emitter.onNext(it) }
+                }
+
+                override fun afterTextChanged(s: Editable?) = Unit
+            }
+
+            queryEditText.addTextChangedListener(textWatcher)
+
+            emitter.setCancellable {
+                queryEditText.removeTextChangedListener(textWatcher)
+            }
+        }
+    }
+
     @SuppressLint("CheckResult")
     override fun onStart() {
         super.onStart()
 
-        val searchTextObservable = createButtonClickObservable()
+        val searchTextObservable = createTextChangeObservable()
 
         searchTextObservable
                 .observeOn(AndroidSchedulers.mainThread())
