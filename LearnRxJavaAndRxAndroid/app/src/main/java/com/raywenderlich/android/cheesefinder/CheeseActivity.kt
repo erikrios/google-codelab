@@ -37,6 +37,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_cheeses.*
+import java.util.concurrent.TimeUnit
 
 class CheeseActivity : BaseSearchActivity() {
 
@@ -73,6 +74,7 @@ class CheeseActivity : BaseSearchActivity() {
         }
 
         return textChangeObservable.filter { it.length >= 2 }
+                .debounce(1000L, TimeUnit.MILLISECONDS)
     }
 
     @SuppressLint("CheckResult")
