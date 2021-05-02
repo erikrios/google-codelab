@@ -32,6 +32,8 @@ package com.raywenderlich.android.cheesefinder
 
 import android.annotation.SuppressLint
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_cheeses.*
 
 class CheeseActivity : BaseSearchActivity() {
@@ -56,8 +58,12 @@ class CheeseActivity : BaseSearchActivity() {
         val searchTextObservable = createButtonClickObservable()
 
         searchTextObservable
-                .subscribe { query ->
-                    showResult(cheeseSearchEngine.search(query))
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
+                .map { cheeseSearchEngine.search(it) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    showResult(it)
                 }
     }
 }
