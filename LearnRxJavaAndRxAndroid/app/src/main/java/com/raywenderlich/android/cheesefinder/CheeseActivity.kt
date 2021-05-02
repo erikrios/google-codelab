@@ -30,6 +30,21 @@
 
 package com.raywenderlich.android.cheesefinder
 
+import io.reactivex.Observable
+import kotlinx.android.synthetic.main.activity_cheeses.*
+
 class CheeseActivity : BaseSearchActivity() {
 
+    private fun createButtonClickObservable(): Observable<String> {
+
+        return Observable.create { emitter ->
+            searchButton.setOnClickListener {
+                emitter.onNext(queryEditText.text.toString())
+            }
+
+            emitter.setCancellable {
+                searchButton.setOnClickListener(null)
+            }
+        }
+    }
 }
