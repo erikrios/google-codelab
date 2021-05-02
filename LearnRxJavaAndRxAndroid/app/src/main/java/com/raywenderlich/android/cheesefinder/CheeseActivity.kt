@@ -30,6 +30,7 @@
 
 package com.raywenderlich.android.cheesefinder
 
+import android.annotation.SuppressLint
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_cheeses.*
 
@@ -46,5 +47,17 @@ class CheeseActivity : BaseSearchActivity() {
                 searchButton.setOnClickListener(null)
             }
         }
+    }
+
+    @SuppressLint("CheckResult")
+    override fun onStart() {
+        super.onStart()
+
+        val searchTextObservable = createButtonClickObservable()
+
+        searchTextObservable
+                .subscribe { query ->
+                    showResult(cheeseSearchEngine.search(query))
+                }
     }
 }
